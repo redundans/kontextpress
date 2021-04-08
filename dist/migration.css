@@ -1,0 +1,201 @@
+.Article-content {
+    font-size: 1.0625rem;
+}
+
+.Article-content h1 {
+    font-size: 4.75rem;
+}
+.Article-content h2 {
+    font-size: 3.5rem;
+}
+.Article-content h3 {
+    font-size: 1.8em;
+    line-height: 1.1;
+}
+
+.Article-content h1,
+.Article-content h2,
+.Article-content h3 {
+    font-size: 1.9em;
+    font-family: var(--heading-font-family);
+    line-height: var(--heading-line-height);
+    letter-spacing: -.01em;
+    font-weight: 400;
+
+    margin: 1.5em auto .3em;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+
+.Article-content h4 {
+    font-size: .875rem;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    margin: 1.5em auto .3em;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+
+.Article-content .Conversation {
+    margin: 1.5em auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+
+.Article-content > p {
+    margin: 1.5em auto;
+    color: rgb(var(--current-color));
+    font-family: var(--default-font-family);
+    line-height: var(--default-line-height);
+    font-size: 1rem;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+    text-align: left;
+}
+
+.Article-content > p a {
+    text-decoration: underline;
+    transition: opacity 200ms var(--ease-out),color 200ms var(--ease-out);
+    color: rgb(var(--theme-color-secondary));
+}
+
+.Article-content > p a:hover {
+    color: rgb(var(--theme-color-primary));
+}
+
+@media (min-width: 1000px) {
+    .Article-content > p {
+        font-size: 1.1875rem;
+    }
+}
+
+.Article-content iframe {
+    margin: 1.5em auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+
+.Article-content blockquote {
+    font-size: 1.9rem;
+    max-width: 55rem;
+    margin: 3rem auto;
+
+    color: rgb(var(--theme-color-primary));
+    line-height: 1.2;
+    font-weight: 400;
+    font-family: var(--heading-font-family);
+    letter-spacing: -.01em;
+    text-align: center;
+}
+
+.Article-content blockquote footer cite,
+.Article-content blockquote cite {
+    display: inline-block;
+    font-size: .875rem;
+    font-style: normal;
+    margin-top: 1.4rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: var(--document-font-family);
+    color: rgb(var(--document-color));
+}
+
+.Article-content figure {
+    text-align: center;
+    margin: 2.5rem auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+
+.Article-content figure.aligncenter {
+    display: block;
+    margin: 2.5rem auto;
+    max-width: 65rem;
+    max-width: var(--wide-max-width);
+}
+
+.Article-content figure img {
+    margin: 1.5em 0;
+    height: auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+.Article-content figure.aligncenter img {
+    height: auto;
+    max-width: 65rem;
+    max-width: var(--wide-max-width);
+}
+
+.Article-content figure figcaption {
+    font-size: .875rem;
+    color: rgba(var(--color-muted));
+    text-align: center;
+}
+
+.Article-content hr {
+    width: 10%;
+    height: 2px;
+    border: 0;
+    margin: 3em auto;
+}
+
+.Article-content ul {
+    list-style-type: none;
+    margin: 1.5em auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+.Article-content ol {
+    list-style-type: decimal;
+    padding-left: 1.5em;
+    margin: 1.5em auto;
+    max-width: 42rem;
+    max-width: var(--narrow-max-width);
+}
+.Article-content ul>li {
+    padding-left: 1.5em;
+    position: relative;
+}
+.Article-content ol>li {
+    padding-left: .5em;
+}
+.Article-content ul>li::before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: var(--color-theme);
+}
+.Article-content li+li {
+    padding-top: .8em;
+}
+
+.Article-content .wp-block-embed iframe {
+    width: 100% !important;
+    border: 2px solid rgb(var(--theme-color-primary)) !important;
+}
+
+@media (max-width: 599px) {
+  .Card--interactive:not(.Card--horizontal)::before {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 600px) {
+  .View-pagination,
+  .View-pagination:hover,
+  .View-pagination:active {
+    padding: 0.8rem 3.8rem;
+    margin: 3.1rem 0 1.6rem;
+  }
+
+  .View-pushDown::before {
+    max-height: none;
+    min-height: 10rem;
+  }
+}
+
+.alm-btn-wrap {
+    text-align: center !important;
+}
