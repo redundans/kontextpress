@@ -70,10 +70,26 @@
     }
 }
 
-.Article-content iframe {
-    margin: 1.5em auto;
-    max-width: 42rem;
-    max-width: var(--narrow-max-width);
+.Article-content .embed-responsive {
+  margin: 1.5em auto;
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.Article-content .embed-responsive .embed-responsive-item,
+.Article-content .embed-responsive iframe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.Article-content .embed-responsive-16by9 {
+  padding-bottom: 56.25%;
 }
 
 .Article-content blockquote {
@@ -176,6 +192,25 @@
     border: 2px solid rgb(var(--theme-color-primary)) !important;
 }
 
+
+.Article-content .Conversation--rtl + .Conversation--rtl {
+    margin-top: calc(-1.5em + .2em);
+}
+
+.Article-content .Conversation--ltr + .Conversation--ltr {
+    margin-top: calc(-1.5em + .2em);
+}
+
+.Article-content .Conversation--ltr .Conversation-message .Conversation-bubble {
+    border-radius: 1.1em 1.1em 1.1em 1.1em !important;
+}
+.Article-content .Conversation--ltr.Conversation--loc .Conversation-message .Conversation-bubble {
+    border-radius: 1.1em 1.1em 0 1.1em !important;
+}
+.Article-content .Conversation--ltr.Conversation--loc .Conversation-message .Conversation-bubble {
+    border-radius: 1.1em 1.1em 1.1em 0 !important;
+}
+
 @media (max-width: 599px) {
   .Card--interactive:not(.Card--horizontal)::before {
     opacity: 1;
@@ -198,4 +233,19 @@
 
 .alm-btn-wrap {
     text-align: center !important;
+}
+
+.progress-container {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 8px;
+  background: #ccc;
+}
+
+/* The progress bar (scroll indicator) */
+.progressbar {
+  height: 8px;
+  background: #04AA6D;
+  width: 0%;
 }

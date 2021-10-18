@@ -23,17 +23,17 @@
 
 		<div class="Intro-meta">
 			<?php
-				$bylines = get_bylines();
-				if ( $bylines ) :
-			?>
-				<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple': ''; ?>">
+			$bylines = get_bylines();
+			if ( $bylines ) :
+				?>
+				<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple' : ''; ?>">
 					<div class="Byline-content">
 							<div class="Byline-figure">
 								<?php
-								foreach( $bylines as $byline ) :
+								foreach ( $bylines as $byline ) :
 									if ( $byline->user_image ) :
 										?>
-									<?php echo wp_get_attachment_image( $byline->user_image, array('40', '40'), '', array( 'class' => 'Byline-thumbnail' ) );  ?>
+										<?php echo wp_get_attachment_image( $byline->user_image, array( '40', '40' ), '', array( 'class' => 'Byline-thumbnail' ) ); ?>
 										<?php
 									endif;
 								endforeach;
@@ -46,13 +46,13 @@
 							</div>
 						<span> 
 							<span class="Byline-divider">–</span>
-							<time datetime="<?php the_date( 'Y-m-d' );?>" class="u-inlineBlock"><?php the_time( 'j F Y' );?></time>
+							<time datetime="<?php the_date( 'Y-m-d' ); ?>" class="u-inlineBlock"><?php the_time( 'j F Y' ); ?></time>
 						</span>
 					</div>
 				</div>
 			<?php endif; ?>
 		</div>
-		<?php if( kontext_has_thumbnail() ) : ?>	
+		<?php if ( kontext_has_thumbnail() ) : ?>
 			<figure class="Intro-figure">
 				<?php the_post_thumbnail( 'full' ); ?>	
 				<figcaption class="Intro-figcaption">

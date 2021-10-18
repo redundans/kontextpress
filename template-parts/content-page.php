@@ -31,9 +31,8 @@ $args = array(
 	'posts_per_page' => -1,
 	'post_parent'    => get_the_ID(),
 	'order'          => 'ASC',
-	'orderby'        => 'menu_order'
- );
-
+	'orderby'        => 'menu_order',
+);
 
 $children = new WP_Query( $args );
 
@@ -41,7 +40,10 @@ if ( $children->have_posts() ) :
 	?>
 	<div class="u-wide">
 		<div class="Grid Grid--blurbs">
-			<?php while ( $children->have_posts() ) : $children->the_post(); ?>
+		<?php
+		while ( $children->have_posts() ) :
+			$children->the_post();
+			?>
 				<div class="Grid-cell u-md-size1of2 ">
 					<div class="Blurb u-aspect1-1">
 						<div class="Blurb-content u-cover">

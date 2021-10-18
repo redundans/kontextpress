@@ -17,7 +17,7 @@ $byline_email = get_term_meta( $byline->term_id, 'user_email', true );
 <article class="u-container">
 	<header class="View-pushDown">
 		<div class="Intro Intro--center Intro--narrow">
-			<h1 class="Intro-title"><?php the_archive_title() ?></h1>
+			<h1 class="Intro-title"><?php the_archive_title(); ?></h1>
 			<div class="Intro-body">
 				<div>
 					<a href="mailto:<?php echo esc_html( $byline_email ); ?>"><?php echo esc_html( $byline_email ); ?></a>

@@ -8,6 +8,8 @@
  */
 
 require 'editor/blocks/kicker/kicker.php';
+require 'editor/blocks/messages/messages.php';
+require 'editor/blocks/message/message.php';
 
 /**
  * Enqueue scripts and styles.
@@ -15,6 +17,13 @@ require 'editor/blocks/kicker/kicker.php';
 add_action(
 	'wp_enqueue_scripts',
 	function() {
+		wp_enqueue_script(
+			'bundle-script',
+			get_theme_file_uri( '/dist/kontext.js' ),
+			array(),
+			filemtime( get_theme_file_path( '/dist/kontext.js' ) ),
+			true
+		);
 		wp_enqueue_style(
 			'bundle-style',
 			get_theme_file_uri( '/dist/bundle.css' ),
@@ -56,13 +65,15 @@ add_filter(
 		if ( 0 < count( array_intersect( array( 'current-menu-item', 'current-menu-parent' ), $classes ) ) ) {
 			$classes[] = 'is-selected ';
 		}
-
 		return $classes;
 	},
 	1,
 	3
 );
 
+/**
+ * Outputs the first category of the object.
+ */
 function the_kontext_category() {
 	$categories     = get_the_category();
 	$first_category = array_shift( $categories );
@@ -71,18 +82,25 @@ function the_kontext_category() {
 	}
 }
 
+/**
+ * Outputs the authors.
+ *
+ * @param array $bylines The Bylines of a post.
+ */
 function the_kontext_authors( $bylines ) {
 	foreach ( $bylines as $index => $byline ) {
 		echo '<span class="Byline-person">';
 		if ( 1 < count( $bylines ) && 0 !== $index ) {
 			echo ( count( $bylines ) - 1 === $index ) ? ' & ' : ', ';
 		}
-		echo '<a href="' . esc_url( home_url( "/author/{$byline->slug}" )  ) . '">' . esc_html( $byline->display_name ) . '</a>';
+		echo '<a href="' . esc_url( home_url( "/author/{$byline->slug}" ) ) . '">' . esc_html( $byline->display_name ) . '</a>';
 		echo '</span>';
 	}
-	echo esc_html( $output );
 }
 
+/**
+ * Outputs the thumbnail.
+ */
 function kontext_has_thumbnail() {
 	global $post;
 	$blocks      = parse_blocks( $post->post_content );
@@ -98,7 +116,7 @@ add_action(
 	'after_setup_theme',
 	function() {
 		add_image_size( 'kontext-thumb', 1080, 512, true );
-		add_image_size( 'kontext-grid', 920, 592, true );
+		add_image_size( 'kontext-grid', 696, 596, true );
 	}
 );
 
@@ -118,6 +136,12 @@ add_filter(
 	}
 );
 
+/**
+ * Outputs the kontext theme colors.
+ *
+ * @param any $color   The colors hex value.
+ * @param any $post_id The post id.
+ */
 function kontext_theme_color( $color = null, $post_id = null ) {
 	$object = get_queried_object();
 	if ( null !== $post_id ) {
@@ -160,12 +184,17 @@ add_action(
 				'sanitize_callback' => 'sanitize_text_field',
 				'auth_callback'     => function() {
 					return current_user_can( 'edit_posts' );
-				}
+				},
 			)
 		);
 	}
 );
 
+/**
+ * Outputs the kicker.
+ *
+ * @param any $post_id The post id.
+ */
 function the_kontext_kicker( $post_id = null ) {
 	if ( null === $post_id ) {
 		$post_id = get_the_id();
@@ -191,31 +220,46 @@ add_action(
 );
 
 /**
- * Add Support for PodBean Embed URLs.
+ * Add Support for libsyn Embed URLs.
  * Modified from https://core.trac.wordpress.org/ticket/31068#comment:12 to use newer oEmbed endpoint.
  */
 add_filter(
 	'oembed_providers',
 	function ( $providers ) {
-		$providers['https://oembed.libsyn.com/embed?item_id=*'] = [
+		$providers['https://directory.libsyn.com/episode/index/show/*'] = array(
 			'https://oembed.libsyn.com?url=',
 			false,
-		];
+		);
 		return $providers;
 	}
 );
 
 /**
- * Add Support for PodBean Embed URLs.
+ * Add Support for libsyn Embed URLs.
  * Modified from https://core.trac.wordpress.org/ticket/31068#comment:12 to use newer oEmbed endpoint.
  */
 add_filter(
 	'oembed_providers',
 	function ( $providers ) {
-		$providers['https://kontextpress.libsyn.com/*'] = [
+		$providers['https://oembed.libsyn.com/embed?item_id=*'] = array(
 			'https://oembed.libsyn.com?url=',
 			false,
-		];
+		);
+		return $providers;
+	}
+);
+
+/**
+ * Add Support for libsyn Embed URLs.
+ * Modified from https://core.trac.wordpress.org/ticket/31068#comment:12 to use newer oEmbed endpoint.
+ */
+add_filter(
+	'oembed_providers',
+	function ( $providers ) {
+		$providers['https://kontextpress.libsyn.com/*'] = array(
+			'https://oembed.libsyn.com?url=',
+			false,
+		);
 		return $providers;
 	}
 );
@@ -234,17 +278,71 @@ add_theme_support( 'title-tag' );
 add_filter(
 	'get_the_archive_title',
 	function ( $title ) {
-	if ( is_category() ) {
+		if ( is_category() ) {
 			$title = single_cat_title( '', false );
-		} elseif ( is_tag() ) {    
+		} elseif ( is_tag() ) {
 			$title = single_tag_title( '', false );
 		} elseif ( is_author() ) {
-			$title = '<span class="vcard">' . get_queried_object()->display_name . '</span>' ;
-		} elseif ( is_tax() ) { //for custom post types.
-			$title = sprintf( __( '%1$s' ), single_term_title( '', false ) );
+			$title = '<span class="vcard">' . get_queried_object()->display_name . '</span>';
+		} elseif ( is_tax() ) {
+			// for custom post types.
+			$title = single_term_title( '', false );
 		} elseif ( is_post_type_archive() ) {
 			$title = post_type_archive_title( '', false );
 		}
 		return $title;
 	}
+);
+
+// Adds parent div to iframes.
+add_filter('the_content', function($content) {
+	return str_replace(array("<iframe", "</iframe>"), array('<div class="iframe-container"><iframe', "</iframe></div>"), $content);
+});
+
+// Adds class to youtube embeds.
+add_filter('embed_oembed_html', function ($html, $url, $attr, $post_id) {
+	if(strpos($html, 'youtube.com') !== false || strpos($html, 'youtu.be') !== false){
+  		return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
+	} else {
+	 return $html;
+	}
+}, 10, 4);
+
+// Adds class to ifram element.
+add_filter('embed_oembed_html', function($code) {
+  return str_replace('<iframe', '<iframe class="embed-responsive-item" ', $code);
+});
+
+// Adding the Open Graph in the Language Attributes.
+add_filter(
+	'language_attributes',
+	function( $output ) {
+		return $output . ' xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml"';
+	}
+);
+
+// Lets add Open Graph Meta Info-
+add_action(
+	'wp_head',
+	function() {
+		global $post;
+		if ( ! is_singular() ) {
+			return;
+		}
+		echo "<!-- Begin Open Graph Tags -->\n";
+		echo '<meta property="og:url" content="' . get_permalink() . '" />' . "\n";
+		echo '<meta property="og:site_name" content="' . get_bloginfo( $show = 'name' ) .'" />' . "\n";
+		echo '<meta property="og:type" content="article" />' . "\n";
+		echo '<meta property="og:title" content="' . get_the_title() . '" />' . "\n";
+		echo '<meta property="og:description" content="'  . wp_strip_all_tags( get_the_excerpt(), true ) . '" />' . "\n";
+
+		if ( ! has_post_thumbnail( $post->ID ) ) {
+			// Echo default image here.
+		} else {
+			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
+			echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '" />';
+		}
+		echo "\n<!-- End Open Graph Tags -->\n";
+	},
+	5
 );

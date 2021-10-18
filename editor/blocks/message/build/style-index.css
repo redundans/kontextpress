@@ -1,0 +1,27 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-block-create-block-section {
+  background-color: #007cba;
+  color: white;
+  padding: 2px; }
+body.admin-color-sunrise .wp-block-create-block-section {
+  background-color: #d1864a; }
+body.admin-color-ocean .wp-block-create-block-section {
+  background-color: #a3b9a2; }
+body.admin-color-midnight .wp-block-create-block-section {
+  background-color: #e14d43; }
+body.admin-color-ectoplasm .wp-block-create-block-section {
+  background-color: #a7b656; }
+body.admin-color-coffee .wp-block-create-block-section {
+  background-color: #c2a68c; }
+body.admin-color-blue .wp-block-create-block-section {
+  background-color: #d9ab59; }
+body.admin-color-light .wp-block-create-block-section {
+  background-color: #0085ba; }
+
+
+/*# sourceMappingURL=style-index.css.map*/

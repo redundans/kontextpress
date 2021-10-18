@@ -1,0 +1,29 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+div[data-type="kontext/message"] {
+ 	display: grid;
+}
+
+.message--rtl {
+	max-width: 75%;
+ 	justify-self: flex-end;
+    background-color: rgb(0, 147, 221);
+    color: white;
+	border-radius: 20px;
+    padding: 1rem 1rem;
+}
+.message--ltr {
+	max-width: 75%;
+ 	justify-self: flex-start;
+    background-color: #eee;
+	border-radius: 20px;
+    padding: 1rem 1rem;
+}
+
+.message .block-editor-block-list__block {
+	margin: 0;
+}

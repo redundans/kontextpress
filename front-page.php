@@ -13,8 +13,8 @@
  */
 
 get_header();
-?>
 
+?>
 	<div class="u-container">
 		<header class="View-pushDown">
 			<div class="Intro">
@@ -26,7 +26,6 @@ get_header();
 				</div>
 			</div>
 		</header>
-
 		<div>
 			<?php
 				$args        = array(
@@ -34,9 +33,7 @@ get_header();
 					'ignore_sticky_posts' => 1,
 				);
 				$cards_query = new WP_Query( $args );
-
 				if ( $cards_query->have_posts() ) {
-
 					// Load posts loop.
 					while ( $cards_query->have_posts() ) {
 						$cards_query->the_post();
@@ -45,10 +42,7 @@ get_header();
 				}
 				?>
 		</div>
-
-		<?php echo do_shortcode('[ajax_load_more id="2490196919" container_type="div" css_classes="Grid" post_type="post" posts_per_page="15" offset="5" scroll="false" transition="none" transition_container="false" button_label="Visa fler" button_loading_label="Laddar fler..." button_done_label="Inga fler poster..."]'); ?>
-
+		<?php echo do_shortcode( '[ajax_load_more id="2490196919" container_type="div" css_classes="Grid" post_type="post" posts_per_page="15" offset="5" scroll="false" transition="none" transition_container="false" button_label="Visa fler" button_loading_label="Laddar fler..." button_done_label="Inga fler poster..."]' ); ?>
 	</div>
-
 <?php
 get_footer();

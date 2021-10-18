@@ -24,7 +24,7 @@ global $wp_query;
 				</span>
 			</h3>
 			<p class="Card-text">
-				<?php echo get_the_excerpt(); ?>
+				<?php echo esc_html( get_the_excerpt() ); ?>
 			</p>
 			<div class="Card-footer">
 				<?php
