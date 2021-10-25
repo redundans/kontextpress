@@ -103,7 +103,9 @@
 						<time datetime="{{{data.date_i18n}}}" class="Card-meta">{{{data.date_i18n}}}</time>
 						<h3 class="Card-title">
 							<span>
-								<span class="Card-type"><?php the_kontext_category(); ?>:</span>
+								<# if ( data.kicker ) { #>
+								<span class="Card-type">{{data.kicker}}:</span>
+								<# } #>
 								{{data.title.rendered}}
 							</span>
 						</h3>

@@ -20,7 +20,7 @@ add_action(
 		wp_enqueue_script(
 			'bundle-script',
 			get_theme_file_uri( '/dist/kontext.js' ),
-			array(),
+			array('wp-util'),
 			filemtime( get_theme_file_path( '/dist/kontext.js' ) ),
 			true
 		);
@@ -376,6 +376,13 @@ add_filter(
 			$imgix_url = imgix_url( $featured_image_url[0], $args );
 			$data->data['featured_image_url'] = $imgix_url;
 	  }
+
+	  // Adds kicker.
+		$categories     = get_the_category( $post->ID );
+		$first_category = array_shift( $categories );
+		if ( $first_category ) {
+	  	$data->data['kicker'] = $first_category->name;
+		}
 
 	  // Remove tags from excerpt
 	  $post_excerpt = $data->data['excerpt'];

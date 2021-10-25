@@ -59,7 +59,7 @@ get_header();
 				?>
 			
 		</div>
-		<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" class="View-pagination">Visa fler</a></div>
+		<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-category="" class="View-pagination">Visa fler</a></div>
 	</div>
 <?php
 get_footer();

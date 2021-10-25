@@ -31,8 +31,16 @@ function onReady() {
 	let loadmore = document.getElementById( 'loadmore' );
 	loadmore.addEventListener('click', function(event) {
 		event.preventDefault();
+		let query = '/wp-json/wp/v2/posts?per_page=9';
 		let offset = parseInt(loadmore.dataset.offset);
-		fetch('/wp-json/wp/v2/posts?per_page=9&offset='+offset).then(function (response) {
+		if ( offset ) {
+			query = query + '&offset='+offset;
+		}
+		let category = loadmore.dataset.category;
+		if ( category ) {
+			query = query + '&category='+category;
+		}
+		fetch(query).then(function (response) {
 			// The API call was successful!
 			return response.json();
 		}).then(function (data) {
