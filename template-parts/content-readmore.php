@@ -26,9 +26,7 @@
 		// Load posts loop.
 		while ( $grid_query->have_posts() ) {
 			$grid_query->the_post();
-			echo '<div class="Grid-cell u-md-size1of2 u-lg-size1of3">';
 			get_template_part( 'template-parts/content', 'grid' );
-			echo '</div>';
 		}
 	}
 	?>

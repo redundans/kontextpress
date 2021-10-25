@@ -1,3 +1,7 @@
+.Header {
+    border-top: 8px solid #000;
+    border-top: 8px solid rgb(var(--theme-color-secondary));
+}
 .Article-content {
     font-size: 1.0625rem;
 }
@@ -246,6 +250,6 @@
 /* The progress bar (scroll indicator) */
 .progressbar {
   height: 8px;
-  background: #04AA6D;
+  background: rgba(var(--theme-color-secondary), 1);
   width: 0%;
 }

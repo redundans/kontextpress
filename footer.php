@@ -77,7 +77,7 @@
 				<h2 class="Footer-title">Ansvarig utgivare</h2>
 				<ul class="Footer-list">
 					<li class="Footer-item">
-						<a href="/redaktionen/mireya" class="Footer-link">Mireya Echeverría Quezada</a>
+						<a href="/author/mireya-echeverria-quezada" class="Footer-link">Mireya Echeverría Quezada</a>
 					</li>
 				</ul>
 			</div>
@@ -91,6 +91,55 @@
 			</a>
 		</div>
 	</footer>
+
+	<script type="text/html" id="tmpl-grid-template">
+		<div class="Grid-cell u-md-size1of2 u-lg-size1of3">
+			<article class="Card Card--interactive">
+				<figure class="Card-figure u-hoverTriggerTarget">
+					<img src="{{{data.featured_image_url}}}" class='Card-image'>
+				</figure>
+				<div class="Card-content ">
+					<div class="Card-body">
+						<time datetime="{{{data.date_i18n}}}" class="Card-meta">{{{data.date_i18n}}}</time>
+						<h3 class="Card-title">
+							<span>
+								<span class="Card-type"><?php the_kontext_category(); ?>:</span>
+								{{data.title.rendered}}
+							</span>
+						</h3>
+						<p class="Card-text">
+							{{{data.excerpt}}}
+						</p>
+						<div class="Card-footer">
+							<# if ( data.bylines ) { #>
+								<div class="Byline {{ data.bylines.length !== 1 ?  'Byline-Multiple' : '' }}">
+								<div class="Byline-content">
+									<a href="#" class="Byline-content">
+										<div class="Byline-figure">
+											<# _.forEach( data.bylines, function ( byline, index ) { #>
+												<img src="{{{byline.byline_url}}}" class='Byline-thumbnail'>
+											<# }) #>
+										</div> 
+										<div class="Byline-text">
+											<span>
+												<span class="Byline-person">
+													<# _.forEach( data.bylines, function ( byline, index ) { #><# if ( 1 < data.bylines.length && 0 !== index ) { #><# if ( data.bylines.length-1 === index ) { #> &<# } else { #>,<# } #><# } #> {{byline.display_name}}<# }) #>
+												</span>
+											</span>
+										</div>
+									</a>
+								</div>
+							</div>
+							<# } #>
+						</div>
+					</div>
+					<a class="Card-link" href="<?php the_permalink(); ?>"> 
+						<span class="u-hiddenVisually">Läs mer</span>
+					</a>
+				</div>
+			</article>
+		</div>
+	</script>
 
 	<?php wp_footer(); ?>
 

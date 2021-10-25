@@ -42,9 +42,11 @@
 	<?php endif; ?>
 </head>
 <body <?php body_class( 'View' ); ?> style="--theme-color-primary: <?php kontext_theme_color( 'primary' ); ?>; --theme-color-secondary: <?php kontext_theme_color( 'secondary' ); ?>;">
+	<?php if ( is_single() ) : ?>
 	<div class="progress-container">
 		<div class="progressbar" id="scrollprogress"></div>
 	</div>
+	<?php endif; ?>
 	<header class="Header" id="header">
 		<div class="Header-container u-md-container">
 			<div class="Header-content">

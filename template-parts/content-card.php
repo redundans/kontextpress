@@ -12,7 +12,17 @@ global $cards_query;
 
 <article class="Card Card--horizontal Card--interactive <?php echo ( 0 === $cards_query->current_post % 2 ) ?: 'Card--reverse'; ?> Card--dark" style="--Card-theme-color: <?php kontext_theme_color( 'secondary', get_the_ID() ); ?>">
 	<figure class="Card-figure u-hoverTriggerTarget">
-		<?php the_post_thumbnail( 'kontext-thumb', array( 'class' => 'Card-image' ) ); ?>
+		<?php
+			$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+			$args      = [
+				'w'  => '1080',
+				'h' => '512',
+				'fit' => 'fit',
+				'crop' => 'faces',
+			];
+			$imgix_url = imgix_url( $image_url, $args );
+			echo "<img src='{$imgix_url}' class='Card-image'>";
+		?>
 	</figure>
 	<div class="Card-content ">
 		<div class="Card-body">
@@ -40,9 +50,15 @@ global $cards_query;
 									<?php
 									foreach ( $bylines as $byline ) :
 										if ( $byline->user_image ) :
-											?>
-											<?php echo wp_get_attachment_image( $byline->user_image, array( '40', '40' ), '', array( 'class' => 'Byline-thumbnail' ) ); ?>
-											<?php
+											$image_url = wp_get_attachment_image_url( $byline->user_image, 'full' );
+											$args      = [
+												'w'  => '100',
+												'h' => '100',
+												'fit' => 'crop',
+												'crop' => 'faces',
+											];
+											$imgix_url = imgix_url( $image_url, $args );
+											echo "<img src='{$imgix_url}' class='Byline-thumbnail'>";
 										endif;
 									endforeach;
 									?>

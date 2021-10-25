@@ -300,13 +300,18 @@ add_filter('the_content', function($content) {
 });
 
 // Adds class to youtube embeds.
-add_filter('embed_oembed_html', function ($html, $url, $attr, $post_id) {
-	if(strpos($html, 'youtube.com') !== false || strpos($html, 'youtu.be') !== false){
-  		return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
-	} else {
-	 return $html;
-	}
-}, 10, 4);
+add_filter(
+	'embed_oembed_html',
+	function ($html, $url, $attr, $post_id) {
+		if(strpos($html, 'youtube.com') !== false || strpos($html, 'youtu.be') !== false){
+	  		return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
+		} else {
+		 return $html;
+		}
+	},
+	10,
+	4
+);
 
 // Adds class to ifram element.
 add_filter('embed_oembed_html', function($code) {
@@ -345,4 +350,62 @@ add_action(
 		echo "\n<!-- End Open Graph Tags -->\n";
 	},
 	5
+);
+
+/**
+ * Adds own content to post REST API result.
+ */
+add_filter(
+	'rest_prepare_post',
+	function( $data, $post, $context ) {
+		if ( is_admin() ) {
+			return $data;
+		}
+	  // Adds featured image url.
+	  $featured_image_id  = $data->data['featured_media'];
+	  $featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'full' );
+
+	  if ( $featured_image_url ) {
+			$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+			$args      = [
+				'w'  => '696',
+				'h' => '596',
+				'fit' => 'crop',
+				'crop' => 'faces',
+			];
+			$imgix_url = imgix_url( $featured_image_url[0], $args );
+			$data->data['featured_image_url'] = $imgix_url;
+	  }
+
+	  // Remove tags from excerpt
+	  $post_excerpt = $data->data['excerpt'];
+	  if ( $post_excerpt ) {
+	  	$data->data['excerpt'] = wp_strip_all_tags( $post_excerpt['rendered'] );
+	  }
+
+	  // Add readable dates.
+	  $data->data['date_i18n'] = date_i18n( get_option('date_format'), $data->data['date_gmt'] );
+
+	  // Add bylines.
+		$bylines = get_bylines( $post->ID );
+	  foreach( $bylines as $byline ) {
+	  	$image_url    = wp_get_attachment_image_url( $byline->user_image, 'full' );
+	  	$args      = [
+				'w'  => '100',
+				'h' => '100',
+				'fit' => 'crop',
+				'crop' => 'faces',
+			];
+			$imgix_url = imgix_url( $image_url, $args );
+	  	$byline_array = [ 'display_name' => $byline->display_name, 'byline_url' => $imgix_url ];
+	  	$data->data['bylines'][] = $byline_array;
+	  }
+
+	  // Remove content.
+	  unset( $data->data['content'] );
+
+	  return $data;
+	},
+	10,
+	3
 );
