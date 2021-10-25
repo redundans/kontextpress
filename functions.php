@@ -112,14 +112,6 @@ add_filter( 'bylines_use_native_block_editor_meta_box', '__return_true' );
 remove_filter( 'term_link', array( 'Bylines\Content_Model', 'filter_term_link' ), 10, 3 );
 remove_filter( 'manage_edit-byline_columns', array( 'Bylines\Byline_Editor', 'filter_manage_edit_byline_columns' ) );
 
-add_action(
-	'after_setup_theme',
-	function() {
-		add_image_size( 'kontext-thumb', 1080, 512, true );
-		add_image_size( 'kontext-grid', 696, 596, true );
-	}
-);
-
 add_filter(
 	'bylines_editor_fields',
 	function( $fields ) {
@@ -344,8 +336,15 @@ add_action(
 		if ( ! has_post_thumbnail( $post->ID ) ) {
 			// Echo default image here.
 		} else {
-			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
-			echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '" />';
+			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+			$args      = [
+				'w'    => '1200',
+				'h'    => '630',
+				'fit'  => 'crop',
+				'crop' => 'faces',
+			];
+			$imgix_url = imgix_url( $thumbnail_src[0], $args );
+			echo '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />';
 		}
 		echo "\n<!-- End Open Graph Tags -->\n";
 	},
