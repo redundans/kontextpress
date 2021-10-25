@@ -125,7 +125,7 @@
 										<div class="Byline-text">
 											<span>
 												<span class="Byline-person">
-													<# _.forEach( data.bylines, function ( byline, index ) { #><# if ( 1 < data.bylines.length && 0 !== index ) { #><# if ( data.bylines.length-1 === index ) { #> &<# } else { #>,<# } #><# } #> {{byline.display_name}}<# }) #>
+													<# _.forEach( data.bylines, function ( byline, index ) { #><# if ( 1 < data.bylines.length && 0 !== index ) { #><# if ( data.bylines.length-1 === index ) { #> & <# } else { #>,<# } #><# } #> {{{byline.display_name}}}<# }) #>
 												</span>
 											</span>
 										</div>
