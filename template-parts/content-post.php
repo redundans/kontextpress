@@ -73,6 +73,9 @@
 
 <div class="Article-content">
 	<?php the_content(); ?>
+	<p class="meta">
+		<?php the_tags(); ?>
+	</p>
 </div>
 
 <div class="u-narrow">
