@@ -135,7 +135,7 @@
 							<# } #>
 						</div>
 					</div>
-					<a class="Card-link" href="<?php the_permalink(); ?>"> 
+					<a class="Card-link" href="{{{data.link}}}"> 
 						<span class="u-hiddenVisually">Läs mer</span>
 					</a>
 				</div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * The main template file
+ * The search template file
  *
  * This is the most generic template file in a WordPress theme
  * and one of the two required files for a theme (the other being style.css).
@@ -14,26 +14,20 @@
 
 get_header();
 
-$category      = get_query_var( 'cat' );
-$category_term = get_term( $category, 'category' );
+$search = get_query_var( 's' );
 
 ?>
 	<div class="u-container">
 		<header class="View-pushDown">
 			<div class="Intro">
-				<h1 class="Intro-title"><?php the_archive_title(); ?>
+				<h1 class="Intro-title"><?php echo sprintf( esc_html__( 'Sökresultat för &#8220;%s&#8221; ', 'kontext' ), get_search_query() ); ?>
 			</h1>
-			<div class="Intro-body">
-				<div>
-					<p><?php the_archive_description(); ?></p>
-				</div>
-			</div>
 		</header>
 		<div>
 			<?php
 				$args        = array(
 					'posts_per_page'      => 4,
-					'cat'                 => $category,
+					's'                   => $search,
 					'ignore_sticky_posts' => 1,
 				);
 				$cards_query = new WP_Query( $args );
@@ -51,7 +45,7 @@ $category_term = get_term( $category, 'category' );
 			<?php
 				$args        = array(
 					'posts_per_page' => 15,
-					'cat'            => $category,
+					's'              => $search,
 					'offset'         => 5,
 				);
 				$cards_query = new WP_Query( $args );
@@ -66,8 +60,9 @@ $category_term = get_term( $category, 'category' );
 			
 		</div>
 		<?php if ( $cards_query->found_posts > 19 ) : ?>
-			<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-category="<?php echo $category_term->term_id; ?>" class="View-pagination">Visa fler</a></div>
+			<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-search="<?php echo $search; ?>" class="View-pagination">Visa fler</a></div>
 		<?php endif; ?>
+
 	</div>
 <?php
 get_footer();

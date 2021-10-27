@@ -40,6 +40,14 @@ function onReady() {
 		if ( category ) {
 			query = query + '&category='+category;
 		}
+		let tag = loadmore.dataset.tag;
+		if ( tag ) {
+			query = query + '&tag='+tag;
+		}
+		let search = loadmore.dataset.search;
+		if ( search ) {
+			query = query + '&search='+search;
+		}
 		fetch(query).then(function (response) {
 			// The API call was successful!
 			return response.json();

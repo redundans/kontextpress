@@ -65,8 +65,9 @@ $tag_term = get_term( $tag, 'tag' );
 				?>
 			
 		</div>
-		<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-category="<?php echo $category_term->term_id; ?>" class="View-pagination">Visa fler</a></div>
-
+		<?php if ( $cards_query->found_posts > 19 ) : ?>
+			<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-tag="<?php echo $tag->term_id; ?>" class="View-pagination">Visa fler</a></div>
+		<?php endif; ?>
 	</div>
 <?php
 get_footer();
