@@ -415,7 +415,7 @@ add_filter(
 			$imgix_url               = imgix_url( $image_url, $args );
 			$byline_array            = array(
 				'display_name' => $byline->display_name,
-				'byline_url'   => $imgix_url,
+				'byline_url'   => ( $image_url ) ? $imgix_url : false,
 			);
 			$data->data['bylines'][] = $byline_array;
 		}

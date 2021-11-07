@@ -119,7 +119,9 @@
 									<a href="#" class="Byline-content">
 										<div class="Byline-figure">
 											<# _.forEach( data.bylines, function ( byline, index ) { #>
-												<img src="{{{byline.byline_url}}}" class='Byline-thumbnail'>
+												<# if ( byline.byline_url ) { #>
+													<img src="{{{byline.byline_url}}}" class='Byline-thumbnail'>
+												<# } #>
 											<# }) #>
 										</div> 
 										<div class="Byline-text">
