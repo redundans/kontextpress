@@ -20,7 +20,7 @@ add_action(
 		wp_enqueue_script(
 			'bundle-script',
 			get_theme_file_uri( '/dist/kontext.js' ),
-			array('wp-util'),
+			array( 'wp-util' ),
 			filemtime( get_theme_file_path( '/dist/kontext.js' ) ),
 			true
 		);
@@ -29,6 +29,18 @@ add_action(
 			get_theme_file_uri( '/dist/bundle.css' ),
 			array(),
 			filemtime( get_theme_file_path( '/dist/bundle.css' ) )
+		);
+		wp_enqueue_style(
+			'tailwind-style',
+			get_theme_file_uri( '/tailwind.css' ),
+			array(),
+			filemtime( get_theme_file_path( '/tailwind.css' ) )
+		);
+		wp_enqueue_style(
+			'font-awsome-style',
+			get_theme_file_uri( '/dist/fontawesome-free/css/all.css' ),
+			array(),
+			filemtime( get_theme_file_path( '/dist/fontawesome-free/css/all.css' ) )
 		);
 		wp_enqueue_style(
 			'migration-style',
@@ -46,6 +58,7 @@ add_action(
 	'init',
 	function() {
 		register_nav_menu( 'primary', __( 'The Primary Menu' ) );
+		register_nav_menu( 'secondary', __( 'The Secondary Menu' ) );
 	}
 );
 
@@ -53,23 +66,6 @@ add_action(
  * Add support for featured images.
  */
 add_theme_support( 'post-thumbnails' );
-
-/**
- * Add class to menu items.
- */
-add_filter(
-	'nav_menu_css_class',
-	function( $classes, $item, $args ) {
-		$kontext_classes = array();
-		$classes[]       = 'Header-item';
-		if ( 0 < count( array_intersect( array( 'current-menu-item', 'current-menu-parent' ), $classes ) ) ) {
-			$classes[] = 'is-selected ';
-		}
-		return $classes;
-	},
-	1,
-	3
-);
 
 /**
  * Outputs the first category of the object.
@@ -193,7 +189,7 @@ function the_kontext_kicker( $post_id = null ) {
 	}
 	$kicker = get_post_meta( $post_id, 'kontext_kicker', true );
 	if ( $kicker ) {
-		echo "<span class=\"Card-type\">{$kicker}:</span>";
+		echo wp_kses_post( "<span class=\"Card-type\">{$kicker}:</span>" );
 	}
 }
 
@@ -287,28 +283,44 @@ add_filter(
 );
 
 // Adds parent div to iframes.
-add_filter('the_content', function($content) {
-	return str_replace(array("<iframe", "</iframe>"), array('<div class="iframe-container"><iframe', "</iframe></div>"), $content);
-});
+add_filter(
+	'the_content',
+	function( $content ) {
+		return str_replace(
+			array(
+				'<iframe',
+				'</iframe>',
+			),
+			array(
+				'<div class="iframe-container"><iframe',
+				'</iframe></div>',
+			),
+			$content
+		);
+	}
+);
 
 // Adds class to youtube embeds.
 add_filter(
 	'embed_oembed_html',
-	function ($html, $url, $attr, $post_id) {
-		if(strpos($html, 'youtube.com') !== false || strpos($html, 'youtu.be') !== false){
-	  		return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
+	function( $html ) {
+		if ( strpos( $html, 'youtube.com' ) !== false || strpos( $html, 'youtu.be' ) !== false ) {
+			return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
 		} else {
-		 return $html;
+			return $html;
 		}
 	},
 	10,
-	4
+	1
 );
 
 // Adds class to ifram element.
-add_filter('embed_oembed_html', function($code) {
-  return str_replace('<iframe', '<iframe class="embed-responsive-item" ', $code);
-});
+add_filter(
+	'embed_oembed_html',
+	function( $code ) {
+		return str_replace( '<iframe', '<iframe class="embed-responsive-item" ', $code );
+	}
+);
 
 // Adding the Open Graph in the Language Attributes.
 add_filter(
@@ -318,7 +330,7 @@ add_filter(
 	}
 );
 
-// Lets add Open Graph Meta Info-
+// Lets add Open Graph Meta Info.
 add_action(
 	'wp_head',
 	function() {
@@ -326,27 +338,25 @@ add_action(
 		if ( ! is_singular() ) {
 			return;
 		}
-		echo "<!-- Begin Open Graph Tags -->\n";
-		echo '<meta property="og:url" content="' . get_permalink() . '" />' . "\n";
-		echo '<meta property="og:site_name" content="' . get_bloginfo( $show = 'name' ) .'" />' . "\n";
-		echo '<meta property="og:type" content="article" />' . "\n";
-		echo '<meta property="og:title" content="' . get_the_title() . '" />' . "\n";
-		echo '<meta property="og:description" content="'  . wp_strip_all_tags( get_the_excerpt(), true ) . '" />' . "\n";
+		echo wp_kses_post( "<!-- Begin Open Graph Tags -->\n" );
+		echo wp_kses_post( '<meta property="og:url" content="' . get_permalink() . '" />' . "\n" );
+		echo wp_kses_post( '<meta property="og:site_name" content="' . get_bloginfo( 'name' ) . '" />' . "\n" );
+		echo wp_kses_post( '<meta property="og:type" content="article" />' . "\n" );
+		echo wp_kses_post( '<meta property="og:title" content="' . get_the_title() . '" />' . "\n" );
+		echo wp_kses_post( '<meta property="og:description" content="' . wp_strip_all_tags( get_the_excerpt(), true ) . '" />' . "\n" );
 
-		if ( ! has_post_thumbnail( $post->ID ) ) {
-			// Echo default image here.
-		} else {
+		if ( has_post_thumbnail( $post->ID ) ) {
 			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
-			$args      = [
+			$args          = array(
 				'w'    => '1200',
 				'h'    => '630',
 				'fit'  => 'crop',
 				'crop' => 'faces',
-			];
-			$imgix_url = imgix_url( $thumbnail_src[0], $args );
-			echo '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />';
+			);
+			$imgix_url     = imgix_url( $thumbnail_src[0], $args );
+			echo wp_kses_post( '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />' );
 		}
-		echo "\n<!-- End Open Graph Tags -->\n";
+		echo wp_kses_post( "\n<!-- End Open Graph Tags -->\n" );
 	},
 	5
 );
@@ -356,62 +366,65 @@ add_action(
  */
 add_filter(
 	'rest_prepare_post',
-	function( $data, $post, $context ) {
+	function( $data, $post ) {
 		if ( is_admin() ) {
 			return $data;
 		}
-	  // Adds featured image url.
-	  $featured_image_id  = $data->data['featured_media'];
-	  $featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'full' );
+		// Adds featured image url.
+		$featured_image_id  = $data->data['featured_media'];
+		$featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'full' );
 
-	  if ( $featured_image_url ) {
-			$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-			$args      = [
-				'w'  => '696',
-				'h' => '596',
-				'fit' => 'crop',
+		if ( $featured_image_url ) {
+			$image_url                        = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+			$args                             = array(
+				'w'    => '696',
+				'h'    => '596',
+				'fit'  => 'crop',
 				'crop' => 'faces',
-			];
-			$imgix_url = imgix_url( $featured_image_url[0], $args );
+			);
+			$imgix_url                        = imgix_url( $featured_image_url[0], $args );
 			$data->data['featured_image_url'] = $imgix_url;
-	  }
+		}
 
-	  // Adds kicker.
+		// Adds kicker.
 		$categories     = get_the_category( $post->ID );
 		$first_category = array_shift( $categories );
 		if ( $first_category ) {
-	  	$data->data['kicker'] = $first_category->name;
+			$data->data['kicker'] = $first_category->name;
 		}
 
-	  // Remove tags from excerpt
-	  $post_excerpt = $data->data['excerpt'];
-	  if ( $post_excerpt ) {
-	  	$data->data['excerpt'] = wp_strip_all_tags( $post_excerpt['rendered'] );
-	  }
+		// Remove tags from excerpt.
+		$post_excerpt = $data->data['excerpt'];
+		if ( $post_excerpt ) {
+			$data->data['excerpt'] = wp_strip_all_tags( $post_excerpt['rendered'] );
+		}
 
-	  // Add readable dates.
-	  $data->data['date_i18n'] = date_i18n( get_option('date_format'), $data->data['date_gmt'] );
+		// Add readable dates.
+		$data->data['date_i18n'] = date_i18n( get_option( 'date_format' ), $data->data['date_gmt'] );
 
-	  // Add bylines.
+		// Add bylines.
 		$bylines = get_bylines( $post->ID );
-	  foreach( $bylines as $byline ) {
-	  	$image_url    = wp_get_attachment_image_url( $byline->user_image, 'full' );
-	  	$args      = [
-				'w'  => '100',
-				'h' => '100',
-				'fit' => 'crop',
+		foreach ( $bylines as $byline ) {
+			$image_url               = wp_get_attachment_image_url( $byline->user_image, 'full' );
+			$args                    = array(
+				'w'    => '100',
+				'h'    => '100',
+				'fit'  => 'crop',
 				'crop' => 'faces',
-			];
-			$imgix_url = imgix_url( $image_url, $args );
-	  	$byline_array = [ 'display_name' => $byline->display_name, 'byline_url' => $imgix_url ];
-	  	$data->data['bylines'][] = $byline_array;
-	  }
+			);
+			$imgix_url               = imgix_url( $image_url, $args );
+			$byline_array            = array(
+				'display_name' => $byline->display_name,
+				'byline_url'   => $imgix_url,
+			);
+			$data->data['bylines'][] = $byline_array;
+		}
 
-	  // Remove content.
-	  unset( $data->data['content'] );
+		// Remove content.
+		unset( $data->data['content'] );
 
-	  return $data;
+		return $data;
 	},
 	10,
-	3
+	2
 );

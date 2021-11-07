@@ -1,5 +1,15 @@
 document.addEventListener( 'DOMContentLoaded', onReady );
 function onReady() {
+	let searchToggles = document.querySelectorAll( '.search-toggle' );
+	let navContainer = document.querySelector( '#nav-container' );
+	let searchContainer = document.querySelector( '#search-container' );
+	searchToggles.forEach(toggle => {
+		toggle.addEventListener('click', function(event) {
+			navContainer.classList.toggle('hidden');
+			searchContainer.classList.toggle('hidden');
+		});
+	});
+
 	let coversations = document.querySelectorAll( '.Conversation' );
 	coversations.forEach(message => {
 		if( message.nextElementSibling === null ){

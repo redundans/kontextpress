@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#nav-container,
+#search-container {
+	padding-left: calc(.75rem + env(safe-area-inset-left)) !important;
+	padding-left: calc(var(--document-margin) + env(safe-area-inset-left)) !important;
+	padding-right: calc(.75rem + env(safe-area-inset-right)) !important;
+	padding-right: calc(var(--document-margin) + env(safe-area-inset-right)) !important;
+}
+
+nav .menu-item a::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    vertical-align: middle;
+    background: 0 0;
+    background: rgba(var(--theme-color-secondary),0);
+    border-radius: 50%;
+    margin-right: .4rem;
+    position: relative;
+    top: -1px;
+}
+nav .current-menu-item a::before,
+nav .current-post-ancestor a::before {
+    background: rgba(var(--theme-color-secondary),1);
+}

@@ -32,7 +32,7 @@ $category_term = get_term( $category, 'category' );
 		<div>
 			<?php
 				$args        = array(
-					'posts_per_page'      => 4,
+					'posts_per_page'      => 3,
 					'cat'                 => $category,
 					'ignore_sticky_posts' => 1,
 				);
@@ -52,7 +52,7 @@ $category_term = get_term( $category, 'category' );
 				$args        = array(
 					'posts_per_page' => 15,
 					'cat'            => $category,
-					'offset'         => 5,
+					'offset'         => 3,
 				);
 				$cards_query = new WP_Query( $args );
 				if ( $cards_query->have_posts() ) {
@@ -66,7 +66,7 @@ $category_term = get_term( $category, 'category' );
 			
 		</div>
 		<?php if ( $cards_query->found_posts > 19 ) : ?>
-			<div class="u-textCenter"><a href="#" id="loadmore" data-offset="20" data-category="<?php echo $category_term->term_id; ?>" class="View-pagination">Visa fler</a></div>
+			<div class="u-textCenter"><a href="#" id="loadmore" data-offset="18" data-category="<?php echo $category_term->term_id; ?>" class="View-pagination">Visa fler</a></div>
 		<?php endif; ?>
 	</div>
 <?php
