@@ -428,3 +428,15 @@ add_filter(
 	10,
 	2
 );
+
+function get_editorial_staff(): array {
+	$bylines = get_terms( 'byline' );
+	$staff   = array();
+	foreach ( $bylines as $byline ) {
+		$byline_image = get_term_meta( $byline->term_id, 'user_image', true );
+		if ( $byline_image ) {
+			$staff[] = $byline;
+		}
+	}
+	return $staff;
+}

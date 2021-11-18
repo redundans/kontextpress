@@ -122,7 +122,6 @@
 }
 
 .Article-content figure {
-    text-align: center;
     margin: 2.5rem auto;
     max-width: 42rem;
     max-width: var(--narrow-max-width);
@@ -135,9 +134,15 @@
     max-width: var(--wide-max-width);
 }
 
+.Article-content figure.small {
+    max-width: 22rem;
+    max-width: var(--tiny-max-width);
+}
+
 .Article-content figure img {
     margin: 1.5em 0;
     height: auto;
+    width: 100%;
     max-width: 42rem;
     max-width: var(--narrow-max-width);
 }
@@ -148,6 +153,7 @@
 }
 
 .Article-content figure figcaption {
+    width: 100%;
     font-size: .875rem;
     color: rgba(var(--color-muted));
     text-align: center;
