@@ -7,6 +7,7 @@
  * @package Kontext
  */
 
+require 'inc/acf.php';
 require 'editor/blocks/kicker/kicker.php';
 require 'editor/blocks/messages/messages.php';
 require 'editor/blocks/message/message.php';
@@ -338,12 +339,12 @@ add_action(
 		if ( ! is_singular() ) {
 			return;
 		}
-		echo wp_kses_post( "<!-- Begin Open Graph Tags -->\n" );
-		echo wp_kses_post( '<meta property="og:url" content="' . get_permalink() . '" />' . "\n" );
-		echo wp_kses_post( '<meta property="og:site_name" content="' . get_bloginfo( 'name' ) . '" />' . "\n" );
-		echo wp_kses_post( '<meta property="og:type" content="article" />' . "\n" );
-		echo wp_kses_post( '<meta property="og:title" content="' . get_the_title() . '" />' . "\n" );
-		echo wp_kses_post( '<meta property="og:description" content="' . wp_strip_all_tags( get_the_excerpt(), true ) . '" />' . "\n" );
+		echo "<!-- Begin Open Graph Tags -->\n";
+		echo '<meta property="og:url" content="' . get_permalink() . '" />' . "\n";
+		echo '<meta property="og:site_name" content="' . get_bloginfo( 'name' ) . '" />' . "\n";
+		echo '<meta property="og:type" content="article" />' . "\n";
+		echo '<meta property="og:title" content="' . get_the_title() . '" />' . "\n";
+		echo '<meta property="og:description" content="' . get_the_excerpt() . '" />' . "\n";
 
 		if ( has_post_thumbnail( $post->ID ) ) {
 			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
@@ -354,9 +355,9 @@ add_action(
 				'crop' => 'faces',
 			);
 			$imgix_url     = imgix_url( $thumbnail_src[0], $args );
-			echo wp_kses_post( '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />' );
+			echo '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />';
 		}
-		echo wp_kses_post( "\n<!-- End Open Graph Tags -->\n" );
+		echo "\n<!-- End Open Graph Tags -->\n";
 	},
 	5
 );
@@ -430,13 +431,25 @@ add_filter(
 );
 
 function get_editorial_staff(): array {
-	$bylines = get_terms( 'byline' );
+	// Get the transient
+	$result = get_transient( 'editorial_staff' );
+	
+	if ( false !== $result ) {
+		// Transient exists, so return it
+		return $result;
+	}
+
+	$bylines = get_terms( 'byline', array( 'orderby' => 'order', 'number' => 999, ) );
 	$staff   = array();
+
 	foreach ( $bylines as $byline ) {
 		$byline_image = get_term_meta( $byline->term_id, 'user_image', true );
 		if ( $byline_image ) {
 			$staff[] = $byline;
 		}
 	}
+
+	set_transient( 'editorial_staff', $staff, 12 * HOUR_IN_SECONDS );
+
 	return $staff;
 }

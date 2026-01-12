@@ -10,6 +10,9 @@
 ?>
 
 <section>
+	<div class="Text Text--full Text--center">
+		<h2 class="Text-section Text-section--simple">Redaktionsmedlemmar</h2>
+	</div>
 	<div class="Grid">
 		<?php
 		$staff = get_editorial_staff();
@@ -34,7 +37,7 @@
 					</figure>
 					<div class="Card-content ">
 						<div class="Card-body">
-							<h3 class="Card-title">Jenny Nguyen</h3>
+							<h3 class="Card-title"><?php echo esc_html( $member->name ); ?></h3>
 							<div class="Card-text">
 								<p>
 									<?php echo esc_html( $byline_role ); ?><br>

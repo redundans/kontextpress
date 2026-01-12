@@ -128,7 +128,6 @@
 }
 
 .Article-content figure.aligncenter {
-    display: block;
     margin: 2.5rem auto;
     max-width: 65rem;
     max-width: var(--wide-max-width);

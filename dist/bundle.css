@@ -882,6 +882,9 @@ a, a:link, a:visited {
     max-width: var(--narrow-max-width);
     text-align: left;
 }
+.Text--center {
+    text-align: center;
+}
 .Text--wide {
     max-width: 65rem;
     max-width: var(--wide-max-width);
@@ -1602,6 +1605,10 @@ a, a:link, a:visited {
     background: rgba(0, 0, 0, .06);
     background: rgba(var(--loading-color));
 }
+.Byline--multiple {
+  padding-left: .6rem;
+}
+.Byline--multiple .Byline-thumbnail,
 .Byline--multiple .Byline-thumbnail+.Byline-thumbnail {
     border: 2px solid #fafafa;
     box-sizing: content-box;
