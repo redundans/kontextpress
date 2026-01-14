@@ -13,16 +13,10 @@ global $wp_query;
 <div class="Grid-cell u-md-size1of2 u-lg-size1of3">
 	<article class="Card Card--interactive">
 		<figure class="Card-figure u-hoverTriggerTarget">
-			<?php
-				$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-				$args      = [
-					'w'  => '696',
-					'h' => '596',
-					'fit' => 'crop',
-					'crop' => 'faces',
-				];
-				$imgix_url = imgix_url( $image_url, $args );
-				echo "<img src='{$imgix_url}' class='Card-image'>";
+			<?php 
+				if ( has_post_thumbnail() ) {
+					echo get_the_post_thumbnail( get_the_ID(), 'card-grid', array( 'class' => 'Card-image' ) ); 
+				}
 			?>
 		</figure>
 		<div class="Card-content ">
@@ -47,19 +41,11 @@ global $wp_query;
 								<a href="<?php echo esc_url( $byline->user_url ); ?>" class="Byline-content"> 
 									<div class="Byline-figure">	
 										<?php
-										foreach ( $bylines as $byline ) :
-											if ( $byline->user_image ) :
-												$image_url = wp_get_attachment_image_url( $byline->user_image, 'full' );
-												$args      = [
-													'w'  => '100',
-													'h' => '100',
-													'fit' => 'crop',
-													'crop' => 'faces',
-												];
-												$imgix_url = imgix_url( $image_url, $args );
-												echo "<img src='{$imgix_url}' class='Byline-thumbnail'>";
-											endif;
-										endforeach;
+											foreach ( $bylines as $byline ) :
+												if ( $byline->user_image ) :
+													echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
+												endif;
+											endforeach;
 										?>
 									</div> 
 									<div class="Byline-text">

@@ -69,6 +69,17 @@ add_action(
 add_theme_support( 'post-thumbnails' );
 
 /**
+ * Add custom image size definitions.
+ */
+add_image_size( 'opengraph-image', 1200, 630, true );
+add_image_size( 'featured-listing', 696, 596, true );
+add_image_size( 'card-large', 1080, 512, true );
+add_image_size( 'card-grid', 696, 596, true );
+add_image_size( 'post-hero', 1600, 900, false );
+add_image_size( 'byline-profile', 100, 100, array( 'center', 'top' ) );
+add_image_size( 'staff-profile', 400, 257, array( 'center', 'top' ) );
+
+/**
  * Outputs the first category of the object.
  */
 function the_kontext_category() {
@@ -347,15 +358,8 @@ add_action(
 		echo '<meta property="og:description" content="' . get_the_excerpt() . '" />' . "\n";
 
 		if ( has_post_thumbnail( $post->ID ) ) {
-			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
-			$args          = array(
-				'w'    => '1200',
-				'h'    => '630',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url     = imgix_url( $thumbnail_src[0], $args );
-			echo '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />';
+			$thumbnail_url = get_the_post_thumbnail_url( $post->ID, 'opengraph-image' );
+			echo '<meta property="og:image" content="' . esc_url( $thumbnail_url ) . '" />';
 		}
 		echo "\n<!-- End Open Graph Tags -->\n";
 	},
@@ -376,15 +380,7 @@ add_filter(
 		$featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'full' );
 
 		if ( $featured_image_url ) {
-			$image_url                        = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-			$args                             = array(
-				'w'    => '696',
-				'h'    => '596',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url                        = imgix_url( $featured_image_url[0], $args );
-			$data->data['featured_image_url'] = $imgix_url;
+			$data->data['featured_image_url'] = get_the_post_thumbnail_url( get_the_ID(), 'featured-listing' );
 		}
 
 		// Adds kicker.
@@ -406,17 +402,9 @@ add_filter(
 		// Add bylines.
 		$bylines = get_bylines( $post->ID );
 		foreach ( $bylines as $byline ) {
-			$image_url               = wp_get_attachment_image_url( $byline->user_image, 'full' );
-			$args                    = array(
-				'w'    => '100',
-				'h'    => '100',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url               = imgix_url( $image_url, $args );
-			$byline_array            = array(
+				$byline_array            = array(
 				'display_name' => $byline->display_name,
-				'byline_url'   => ( $image_url ) ? $imgix_url : false,
+				'byline_url' => wp_get_attachment_image_url( $byline->user_image, 'byline-profile' ),
 			);
 			$data->data['bylines'][] = $byline_array;
 		}
