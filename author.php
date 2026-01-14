@@ -11,6 +11,7 @@ get_header();
 
 $byline       = get_queried_object();
 $byline_image = get_term_meta( $byline->term_id, 'user_image', true );
+$byline_email = get_term_meta( $byline->term_id, 'user_email', true );
 ?>
 
 <article class="u-container">

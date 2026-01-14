@@ -38,24 +38,22 @@ global $wp_query;
 						?>
 						<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple' : ''; ?>">
 							<div class="Byline-content">
-								<a href="<?php echo esc_url( $byline->user_url ); ?>" class="Byline-content"> 
-									<div class="Byline-figure">	
-										<?php
-											foreach ( $bylines as $byline ) :
-												if ( $byline->user_image ) :
-													echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
-												endif;
-											endforeach;
-										?>
-									</div> 
-									<div class="Byline-text">
-										<span>
-											<span class="Byline-person">
-												<?php the_kontext_authors( $bylines ); ?>
-											</span>
+								<div class="Byline-figure"> 
+									<?php
+									foreach ( $bylines as $byline ) :
+										if ( $byline->user_image ) :
+											echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
+										endif;
+									endforeach;
+									?>
+								</div> 
+								<div class="Byline-text">
+									<span>
+										<span class="Byline-person">
+											<?php the_kontext_authors( $bylines ); ?>
 										</span>
-									</div>
-								</a>
+									</span>
+								</div>
 							</div>
 						</div>
 					<?php endif; ?>
