@@ -19,9 +19,6 @@
 					<li class="Footer-item">
 						<a href="mailto:info@kontextpress.se" class="Footer-link u-textNowrap">info@kontextpress.se</a>
 					</li>
-					<li class="Footer-item">
-						<a href="/redaktionen" class="Footer-link">Kontakta redaktionen</a>
-					</li>
 				</ul>
 			</div>
 			<div class="Footer-col">
@@ -36,12 +33,12 @@
 						<input id="swish-footer" readonly="readonly" value="1236 2121 79" class="u-hiddenVisually">
 					</li>
 					<li class="Footer-item">
-						<a href="/stod-oss" class="Footer-link">Vår finansering</a>
+						<a href="/om-kontext/stod-oss" class="Footer-link">Vår finansering</a>
 					</li>
 				</ul>
 			</div>
 			<div class="Footer-col">
-				<h2 class="Footer-title">Va i loopen</h2>
+				<h2 class="Footer-title">Följ oss</h2>
 				<ul class="Footer-list">
 					<li class="Footer-item">
 						<a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/kontextpress/" class="Footer-link">Följ på Instagram</a>
@@ -58,10 +55,10 @@
 				<h2 class="Footer-title">Kontext Press</h2>
 				<ul class="Footer-list">
 					<li class="Footer-item">
-						<a href="/om-oss" class="Footer-link">Om oss</a>
+						<a href="/om-kontext" class="Footer-link">Om oss</a>
 					</li>
 					<li class="Footer-item">
-						<a href="/redaktionen" class="Footer-link">Redaktionen</a>
+						<a href="/om-kontext/redaktionen" class="Footer-link">Redaktionen</a>
 					</li>
 				</ul>
 			</div>
