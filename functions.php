@@ -396,8 +396,8 @@ add_filter(
 			$data->data['excerpt'] = wp_strip_all_tags( $post_excerpt['rendered'] );
 		}
 
-		// Add readable dates.
-		$data->data['date_i18n'] = date_i18n( get_option( 'date_format' ), $data->data['date_gmt'] );
+		// Add formatted date.
+		$data->data['date_i18n'] = date_i18n( get_option( 'date_format' ), strtotime( $data->data['date_gmt'] ) );
 
 		// Add bylines.
 		$bylines = get_bylines( $post->ID );
