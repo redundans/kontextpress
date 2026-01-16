@@ -73,7 +73,7 @@ add_theme_support( 'post-thumbnails' );
  */
 add_image_size( 'opengraph-image', 1200, 630, true );
 add_image_size( 'featured-listing', 696, 596, true );
-add_image_size( 'card-large', 1080, 512, true );
+add_image_size( 'card-large', 1080, 720, true );
 add_image_size( 'card-grid', 696, 596, true );
 add_image_size( 'post-hero', 1600, 900, false );
 add_image_size( 'byline-profile', 100, 100, array( 'center', 'top' ) );
