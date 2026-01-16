@@ -52,7 +52,6 @@
 		</div>
 		<?php if ( kontext_has_thumbnail() ) : ?>
 			<figure class="Intro-figure">
-				<!-- <?php the_post_thumbnail( 'full' ); ?> -->
 				 <?php the_post_thumbnail( 'post-hero' ); ?>
 				<figcaption class="Intro-figcaption">
 					<?php the_post_thumbnail_caption(); ?>
