@@ -17,7 +17,7 @@ require 'editor/blocks/message/message.php';
  */
 add_action(
 	'wp_enqueue_scripts',
-	function() {
+	function () {
 		wp_enqueue_script(
 			'bundle-script',
 			get_theme_file_uri( '/dist/kontext.js' ),
@@ -57,7 +57,7 @@ add_action(
  */
 add_action(
 	'init',
-	function() {
+	function () {
 		register_nav_menu( 'primary', __( 'The Primary Menu' ) );
 		register_nav_menu( 'secondary', __( 'The Secondary Menu' ) );
 	}
@@ -67,6 +67,17 @@ add_action(
  * Add support for featured images.
  */
 add_theme_support( 'post-thumbnails' );
+
+/**
+ * Add custom image size definitions.
+ */
+add_image_size( 'opengraph-image', 1200, 630, true );
+add_image_size( 'featured-listing', 696, 596, true );
+add_image_size( 'card-large', 1080, 720, true );
+add_image_size( 'card-grid', 696, 596, true );
+add_image_size( 'post-hero', 1600, 900, false );
+add_image_size( 'byline-profile', 100, 100, array( 'center', 'top' ) );
+add_image_size( 'staff-profile', 400, 257, array( 'center', 'top' ) );
 
 /**
  * Outputs the first category of the object.
@@ -111,7 +122,7 @@ remove_filter( 'manage_edit-byline_columns', array( 'Bylines\Byline_Editor', 'fi
 
 add_filter(
 	'bylines_editor_fields',
-	function( $fields ) {
+	function ( $fields ) {
 		unset( $fields['user_url'] );
 		$fields['user_image'] = array(
 			'label' => 'Profilbild',
@@ -162,7 +173,7 @@ function kontext_theme_color( $color = null, $post_id = null ) {
  */
 add_action(
 	'init',
-	function(): void {
+	function (): void {
 		register_meta(
 			'post',
 			'kontext_kicker',
@@ -171,7 +182,7 @@ add_action(
 				'type'              => 'string',
 				'single'            => true,
 				'sanitize_callback' => 'sanitize_text_field',
-				'auth_callback'     => function() {
+				'auth_callback'     => function () {
 					return current_user_can( 'edit_posts' );
 				},
 			)
@@ -196,14 +207,14 @@ function the_kontext_kicker( $post_id = null ) {
 
 add_action(
 	'init',
-	function() {
+	function () {
 		add_post_type_support( 'page', 'excerpt' );
 	}
 );
 
 add_action(
 	'wp_footer',
-	function() {
+	function () {
 		get_template_part( 'template-parts/content-grid-template' );
 	}
 );
@@ -286,7 +297,7 @@ add_filter(
 // Adds parent div to iframes.
 add_filter(
 	'the_content',
-	function( $content ) {
+	function ( $content ) {
 		return str_replace(
 			array(
 				'<iframe',
@@ -304,7 +315,7 @@ add_filter(
 // Adds class to youtube embeds.
 add_filter(
 	'embed_oembed_html',
-	function( $html ) {
+	function ( $html ) {
 		if ( strpos( $html, 'youtube.com' ) !== false || strpos( $html, 'youtu.be' ) !== false ) {
 			return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
 		} else {
@@ -318,7 +329,7 @@ add_filter(
 // Adds class to ifram element.
 add_filter(
 	'embed_oembed_html',
-	function( $code ) {
+	function ( $code ) {
 		return str_replace( '<iframe', '<iframe class="embed-responsive-item" ', $code );
 	}
 );
@@ -326,7 +337,7 @@ add_filter(
 // Adding the Open Graph in the Language Attributes.
 add_filter(
 	'language_attributes',
-	function( $output ) {
+	function ( $output ) {
 		return $output . ' xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml"';
 	}
 );
@@ -334,7 +345,7 @@ add_filter(
 // Lets add Open Graph Meta Info.
 add_action(
 	'wp_head',
-	function() {
+	function () {
 		global $post;
 		if ( ! is_singular() ) {
 			return;
@@ -347,15 +358,8 @@ add_action(
 		echo '<meta property="og:description" content="' . get_the_excerpt() . '" />' . "\n";
 
 		if ( has_post_thumbnail( $post->ID ) ) {
-			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
-			$args          = array(
-				'w'    => '1200',
-				'h'    => '630',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url     = imgix_url( $thumbnail_src[0], $args );
-			echo '<meta property="og:image" content="' . esc_url( $imgix_url ) . '" />';
+			$thumbnail_url = get_the_post_thumbnail_url( $post->ID, 'opengraph-image' );
+			echo '<meta property="og:image" content="' . esc_url( $thumbnail_url ) . '" />';
 		}
 		echo "\n<!-- End Open Graph Tags -->\n";
 	},
@@ -367,7 +371,7 @@ add_action(
  */
 add_filter(
 	'rest_prepare_post',
-	function( $data, $post ) {
+	function ( $data, $post ) {
 		if ( is_admin() ) {
 			return $data;
 		}
@@ -376,15 +380,7 @@ add_filter(
 		$featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'full' );
 
 		if ( $featured_image_url ) {
-			$image_url                        = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-			$args                             = array(
-				'w'    => '696',
-				'h'    => '596',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url                        = imgix_url( $featured_image_url[0], $args );
-			$data->data['featured_image_url'] = $imgix_url;
+			$data->data['featured_image_url'] = get_the_post_thumbnail_url( get_the_ID(), 'featured-listing' );
 		}
 
 		// Adds kicker.
@@ -400,23 +396,15 @@ add_filter(
 			$data->data['excerpt'] = wp_strip_all_tags( $post_excerpt['rendered'] );
 		}
 
-		// Add readable dates.
-		$data->data['date_i18n'] = date_i18n( get_option( 'date_format' ), $data->data['date_gmt'] );
+		// Add formatted date.
+		$data->data['date_i18n'] = date_i18n( get_option( 'date_format' ), strtotime( $data->data['date_gmt'] ) );
 
 		// Add bylines.
 		$bylines = get_bylines( $post->ID );
 		foreach ( $bylines as $byline ) {
-			$image_url               = wp_get_attachment_image_url( $byline->user_image, 'full' );
-			$args                    = array(
-				'w'    => '100',
-				'h'    => '100',
-				'fit'  => 'crop',
-				'crop' => 'faces',
-			);
-			$imgix_url               = imgix_url( $image_url, $args );
 			$byline_array            = array(
 				'display_name' => $byline->display_name,
-				'byline_url'   => ( $image_url ) ? $imgix_url : false,
+				'byline_url'   => wp_get_attachment_image_url( $byline->user_image, 'byline-profile' ),
 			);
 			$data->data['bylines'][] = $byline_array;
 		}
@@ -430,16 +418,19 @@ add_filter(
 	2
 );
 
+/**
+ * Get editorial staff.
+ */
 function get_editorial_staff(): array {
-	// Get the transient
+	// Get the transient.
 	$result = get_transient( 'editorial_staff' );
-	
+
 	if ( false !== $result ) {
-		// Transient exists, so return it
+		// Transient exists, so return it.
 		return $result;
 	}
 
-	$bylines = get_terms( 'byline', array( 'orderby' => 'order', 'number' => 999, ) );
+	$bylines = get_terms( 'byline' );
 	$staff   = array();
 
 	foreach ( $bylines as $byline ) {

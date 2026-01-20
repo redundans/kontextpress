@@ -32,17 +32,7 @@
 								<?php
 								foreach ( $bylines as $byline ) :
 									if ( $byline->user_image ) :
-										$image_url = wp_get_attachment_image_url( $byline->user_image, 'full' );
-										$args      = [
-											'w'  => '100',
-											'h' => '100',
-											'fit' => 'crop',
-											'crop' => 'faces',
-										];
-										$imgix_url = imgix_url( $image_url, $args );
-										echo "<img src='{$imgix_url}' class='Byline-thumbnail'>";
-										?>
-										<?php
+										echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
 									endif;
 								endforeach;
 								?>
@@ -62,7 +52,7 @@
 		</div>
 		<?php if ( kontext_has_thumbnail() ) : ?>
 			<figure class="Intro-figure">
-				<?php the_post_thumbnail( 'full' ); ?>
+				<?php the_post_thumbnail( 'post-hero' ); ?>
 				<figcaption class="Intro-figcaption">
 					<?php the_post_thumbnail_caption(); ?>
 				</figcaption>

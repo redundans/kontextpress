@@ -14,15 +14,9 @@ global $wp_query;
 	<article class="Card Card--interactive">
 		<figure class="Card-figure u-hoverTriggerTarget">
 			<?php
-				$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-				$args      = [
-					'w'  => '696',
-					'h' => '596',
-					'fit' => 'crop',
-					'crop' => 'faces',
-				];
-				$imgix_url = imgix_url( $image_url, $args );
-				echo "<img src='{$imgix_url}' class='Card-image'>";
+			if ( has_post_thumbnail() ) {
+				the_post_thumbnail( 'card-grid', array( 'class' => 'Card-image' ) );
+			}
 			?>
 		</figure>
 		<div class="Card-content ">
@@ -42,34 +36,24 @@ global $wp_query;
 					$bylines = get_bylines();
 					if ( $bylines ) :
 						?>
-						<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple' : ''; ?>">
+						<div class="Byline <?php echo esc_attr( ( 1 < count( $bylines ) ) ? 'Byline--multiple' : '' ); ?>">
 							<div class="Byline-content">
-								<a href="<?php echo esc_url( $byline->user_url ); ?>" class="Byline-content"> 
-									<div class="Byline-figure">	
-										<?php
-										foreach ( $bylines as $byline ) :
-											if ( $byline->user_image ) :
-												$image_url = wp_get_attachment_image_url( $byline->user_image, 'full' );
-												$args      = [
-													'w'  => '100',
-													'h' => '100',
-													'fit' => 'crop',
-													'crop' => 'faces',
-												];
-												$imgix_url = imgix_url( $image_url, $args );
-												echo "<img src='{$imgix_url}' class='Byline-thumbnail'>";
-											endif;
-										endforeach;
-										?>
-									</div> 
-									<div class="Byline-text">
-										<span>
-											<span class="Byline-person">
-												<?php the_kontext_authors( $bylines ); ?>
-											</span>
+								<div class="Byline-figure"> 
+									<?php
+									foreach ( $bylines as $byline ) :
+										if ( $byline->user_image ) :
+											echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
+										endif;
+									endforeach;
+									?>
+								</div> 
+								<div class="Byline-text">
+									<span>
+										<span class="Byline-person">
+											<?php the_kontext_authors( $bylines ); ?>
 										</span>
-									</div>
-								</a>
+									</span>
+								</div>
 							</div>
 						</div>
 					<?php endif; ?>

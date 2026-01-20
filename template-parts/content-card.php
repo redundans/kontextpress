@@ -10,18 +10,12 @@
 global $cards_query;
 ?>
 
-<article class="Card Card--horizontal Card--interactive <?php echo ( 0 === $cards_query->current_post % 2 ) ?: 'Card--reverse'; ?> Card--dark" style="--Card-theme-color: <?php kontext_theme_color( 'secondary', get_the_ID() ); ?>">
+<article class="Card Card--horizontal Card--interactive <?php echo esc_attr( ( 0 === $cards_query->current_post % 2 ) ?: 'Card--reverse' ); ?> Card--dark" style="--Card-theme-color: <?php kontext_theme_color( 'secondary', get_the_ID() ); ?>">
 	<figure class="Card-figure u-hoverTriggerTarget">
 		<?php
-			$image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-			$args      = [
-				'w'  => '1080',
-				'h' => '512',
-				'fit' => 'fit',
-				'crop' => 'faces',
-			];
-			$imgix_url = imgix_url( $image_url, $args );
-			echo "<img src='{$imgix_url}' class='Card-image'>";
+		if ( has_post_thumbnail() ) {
+			the_post_thumbnail( 'card-large', array( 'class' => 'Card-image' ) );
+		}
 		?>
 	</figure>
 	<div class="Card-content ">
@@ -43,34 +37,24 @@ global $cards_query;
 				$bylines = get_bylines();
 				if ( $bylines ) :
 					?>
-					<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple' : ''; ?>">
+					<div class="Byline <?php echo esc_attr( ( 1 < count( $bylines ) ) ? 'Byline--multiple' : '' ); ?>">
 						<div class="Byline-content">
-							<a href="<?php echo esc_url( $byline->user_url ); ?>" class="Byline-content">
-								<div class="Byline-figure">
-									<?php
-									foreach ( $bylines as $byline ) :
-										if ( $byline->user_image ) :
-											$image_url = wp_get_attachment_image_url( $byline->user_image, 'full' );
-											$args      = [
-												'w'  => '100',
-												'h' => '100',
-												'fit' => 'crop',
-												'crop' => 'faces',
-											];
-											$imgix_url = imgix_url( $image_url, $args );
-											echo "<img src='{$imgix_url}' class='Byline-thumbnail'>";
-										endif;
-									endforeach;
-									?>
-								</div> 
-								<div class="Byline-text">
-									<span>
-										<span class="Byline-person">
-											<?php the_kontext_authors( $bylines ); ?>
-										</span>
+							<div class="Byline-figure">
+								<?php
+								foreach ( $bylines as $byline ) :
+									if ( $byline->user_image ) :
+										echo wp_get_attachment_image( $byline->user_image, 'byline-profile', false, array( 'class' => 'Byline-thumbnail' ) );
+									endif;
+								endforeach;
+								?>
+							</div> 
+							<div class="Byline-text">
+								<span>
+									<span class="Byline-person">
+										<?php the_kontext_authors( $bylines ); ?>
 									</span>
-								</div>
-							</a>
+								</span>
+							</div>
 						</div>
 					</div>
 				<?php endif; ?>
