@@ -24,9 +24,9 @@
 			<div class="Grid-cell u-md-size1of2 u-lg-size1of3 ">
 				<article class="Card Card--interactive">
 					<figure class="Card-figure"> <?php /* lade till klassen Card-figure som verkar saknas i din kod */ ?>
-						<?php 
+						<?php
 						if ( $byline_image ) {
-							echo wp_get_attachment_image( $byline_image, 'staff-profile', false, array( 'class' => 'Card-image' ) ); 
+							echo wp_get_attachment_image( $byline_image, 'staff-profile', false, array( 'class' => 'Card-image' ) );
 						}
 						?>
 					</figure>
@@ -40,7 +40,7 @@
 								</p>
 							</div>
 						</div>
-						<a class="Card-link" href="<?php echo esc_url( home_url( "/author/{$member->slug}" ) ) ?>">
+						<a class="Card-link" href="<?php echo esc_url( home_url( "/author/{$member->slug}" ) ); ?>">
 							<span class="u-hiddenVisually">Läs mer</span>
 						</a>
 					</div>

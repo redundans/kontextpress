@@ -17,7 +17,7 @@ require 'editor/blocks/message/message.php';
  */
 add_action(
 	'wp_enqueue_scripts',
-	function() {
+	function () {
 		wp_enqueue_script(
 			'bundle-script',
 			get_theme_file_uri( '/dist/kontext.js' ),
@@ -57,7 +57,7 @@ add_action(
  */
 add_action(
 	'init',
-	function() {
+	function () {
 		register_nav_menu( 'primary', __( 'The Primary Menu' ) );
 		register_nav_menu( 'secondary', __( 'The Secondary Menu' ) );
 	}
@@ -122,7 +122,7 @@ remove_filter( 'manage_edit-byline_columns', array( 'Bylines\Byline_Editor', 'fi
 
 add_filter(
 	'bylines_editor_fields',
-	function( $fields ) {
+	function ( $fields ) {
 		unset( $fields['user_url'] );
 		$fields['user_image'] = array(
 			'label' => 'Profilbild',
@@ -173,7 +173,7 @@ function kontext_theme_color( $color = null, $post_id = null ) {
  */
 add_action(
 	'init',
-	function(): void {
+	function (): void {
 		register_meta(
 			'post',
 			'kontext_kicker',
@@ -182,7 +182,7 @@ add_action(
 				'type'              => 'string',
 				'single'            => true,
 				'sanitize_callback' => 'sanitize_text_field',
-				'auth_callback'     => function() {
+				'auth_callback'     => function () {
 					return current_user_can( 'edit_posts' );
 				},
 			)
@@ -207,14 +207,14 @@ function the_kontext_kicker( $post_id = null ) {
 
 add_action(
 	'init',
-	function() {
+	function () {
 		add_post_type_support( 'page', 'excerpt' );
 	}
 );
 
 add_action(
 	'wp_footer',
-	function() {
+	function () {
 		get_template_part( 'template-parts/content-grid-template' );
 	}
 );
@@ -297,7 +297,7 @@ add_filter(
 // Adds parent div to iframes.
 add_filter(
 	'the_content',
-	function( $content ) {
+	function ( $content ) {
 		return str_replace(
 			array(
 				'<iframe',
@@ -315,7 +315,7 @@ add_filter(
 // Adds class to youtube embeds.
 add_filter(
 	'embed_oembed_html',
-	function( $html ) {
+	function ( $html ) {
 		if ( strpos( $html, 'youtube.com' ) !== false || strpos( $html, 'youtu.be' ) !== false ) {
 			return '<div class="embed-responsive embed-responsive-16by9">' . $html . '</div>';
 		} else {
@@ -329,7 +329,7 @@ add_filter(
 // Adds class to ifram element.
 add_filter(
 	'embed_oembed_html',
-	function( $code ) {
+	function ( $code ) {
 		return str_replace( '<iframe', '<iframe class="embed-responsive-item" ', $code );
 	}
 );
@@ -337,7 +337,7 @@ add_filter(
 // Adding the Open Graph in the Language Attributes.
 add_filter(
 	'language_attributes',
-	function( $output ) {
+	function ( $output ) {
 		return $output . ' xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml"';
 	}
 );
@@ -345,7 +345,7 @@ add_filter(
 // Lets add Open Graph Meta Info.
 add_action(
 	'wp_head',
-	function() {
+	function () {
 		global $post;
 		if ( ! is_singular() ) {
 			return;
@@ -371,7 +371,7 @@ add_action(
  */
 add_filter(
 	'rest_prepare_post',
-	function( $data, $post ) {
+	function ( $data, $post ) {
 		if ( is_admin() ) {
 			return $data;
 		}
@@ -402,9 +402,9 @@ add_filter(
 		// Add bylines.
 		$bylines = get_bylines( $post->ID );
 		foreach ( $bylines as $byline ) {
-				$byline_array            = array(
+			$byline_array            = array(
 				'display_name' => $byline->display_name,
-				'byline_url' => wp_get_attachment_image_url( $byline->user_image, 'byline-profile' ),
+				'byline_url'   => wp_get_attachment_image_url( $byline->user_image, 'byline-profile' ),
 			);
 			$data->data['bylines'][] = $byline_array;
 		}
@@ -418,16 +418,19 @@ add_filter(
 	2
 );
 
+/**
+ * Get editorial staff.
+ */
 function get_editorial_staff(): array {
-	// Get the transient
+	// Get the transient.
 	$result = get_transient( 'editorial_staff' );
-	
+
 	if ( false !== $result ) {
-		// Transient exists, so return it
+		// Transient exists, so return it.
 		return $result;
 	}
 
-	$bylines = get_terms( 'byline', array( 'orderby' => 'order', 'number' => 999, ) );
+	$bylines = get_terms( 'byline' );
 	$staff   = array();
 
 	foreach ( $bylines as $byline ) {

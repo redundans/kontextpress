@@ -10,13 +10,13 @@
 global $cards_query;
 ?>
 
-<article class="Card Card--horizontal Card--interactive <?php echo ( 0 === $cards_query->current_post % 2 ) ?: 'Card--reverse'; ?> Card--dark" style="--Card-theme-color: <?php kontext_theme_color( 'secondary', get_the_ID() ); ?>">
+<article class="Card Card--horizontal Card--interactive <?php echo esc_attr( ( 0 === $cards_query->current_post % 2 ) ?: 'Card--reverse' ); ?> Card--dark" style="--Card-theme-color: <?php kontext_theme_color( 'secondary', get_the_ID() ); ?>">
 	<figure class="Card-figure u-hoverTriggerTarget">
-		<?php 
-			if ( has_post_thumbnail() ) {
-				echo get_the_post_thumbnail( get_the_ID(), 'card-large', array( 'class' => 'Card-image' ) ); 
-			}
-    	?>
+		<?php
+		if ( has_post_thumbnail() ) {
+			the_post_thumbnail( 'card-large', array( 'class' => 'Card-image' ) );
+		}
+		?>
 	</figure>
 	<div class="Card-content ">
 		<div class="Card-body">
@@ -37,7 +37,7 @@ global $cards_query;
 				$bylines = get_bylines();
 				if ( $bylines ) :
 					?>
-					<div class="Byline <?php echo ( count( $bylines ) > 1 ) ? 'Byline--multiple' : ''; ?>">
+					<div class="Byline <?php echo esc_attr( ( 1 < count( $bylines ) ) ? 'Byline--multiple' : '' ); ?>">
 						<div class="Byline-content">
 							<div class="Byline-figure">
 								<?php

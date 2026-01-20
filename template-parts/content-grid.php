@@ -13,10 +13,10 @@ global $wp_query;
 <div class="Grid-cell u-md-size1of2 u-lg-size1of3">
 	<article class="Card Card--interactive">
 		<figure class="Card-figure u-hoverTriggerTarget">
-			<?php 
-				if ( has_post_thumbnail() ) {
-					echo get_the_post_thumbnail( get_the_ID(), 'card-grid', array( 'class' => 'Card-image' ) ); 
-				}
+			<?php
+			if ( has_post_thumbnail() ) {
+				the_post_thumbnail( get_the_ID(), 'card-grid', array( 'class' => 'Card-image' ) );
+			}
 			?>
 		</figure>
 		<div class="Card-content ">
@@ -36,7 +36,7 @@ global $wp_query;
 					$bylines = get_bylines();
 					if ( $bylines ) :
 						?>
-						<div class="Byline <?php echo ( 1 < count( $bylines ) ) ? 'Byline--multiple' : ''; ?>">
+						<div class="Byline <?php echo esc_attr( ( 1 < count( $bylines ) ) ? 'Byline--multiple' : '' ); ?>">
 							<div class="Byline-content">
 								<div class="Byline-figure"> 
 									<?php
