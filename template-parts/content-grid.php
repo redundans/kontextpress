@@ -15,7 +15,7 @@ global $wp_query;
 		<figure class="Card-figure u-hoverTriggerTarget">
 			<?php
 			if ( has_post_thumbnail() ) {
-				the_post_thumbnail( get_the_ID(), 'card-grid', array( 'class' => 'Card-image' ) );
+				the_post_thumbnail( 'card-grid', array( 'class' => 'Card-image' ) );
 			}
 			?>
 		</figure>
